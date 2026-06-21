@@ -1,11 +1,11 @@
-﻿using GymApplication.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GymApplication.DbContextss;
 using Microsoft.EntityFrameworkCore;
+using GymApplication.DAL.Data.DbContextss;
+using GymApplication.DAL.Data.Models;
 
 namespace GymApplication.DAL.Repositories
 {
@@ -34,7 +34,7 @@ namespace GymApplication.DAL.Repositories
 
         public async Task<Plan?> GetByIdAsync(int id)
         {
-            return await dbContext.Plans.FirstOrDefaultAsync(p => p.PlanId == id);
+            return await dbContext.Plans.FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<int> SaveChangesAsync()

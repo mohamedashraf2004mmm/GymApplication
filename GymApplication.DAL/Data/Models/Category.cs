@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymApplication.DAL.Models
+namespace GymApplication.DAL.Data.Models
 {
     public class Category : BaseEntity
     {
         public string CategoryName { get; set; }
+
+        public ICollection<Session> Sessions { get; set; }
     }
 }

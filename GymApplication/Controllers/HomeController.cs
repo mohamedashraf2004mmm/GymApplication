@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using GymApplication.Models;
+using GymApplication.DAL.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymApplication.Controllers

@@ -1,4 +1,4 @@
-﻿using GymApplication.DAL.Models.Enums;
+﻿using GymApplication.DAL.Data.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymApplication.DAL.Models
+namespace GymApplication.DAL.Data.Models
 {
     public abstract class GymUser : BaseEntity
     {
@@ -17,6 +17,8 @@ namespace GymApplication.DAL.Models
         public Address Address { get; set; }
 
         public Gender Gender { get; set; }
+
+        public string Phone { get; set; }
 
 
     }

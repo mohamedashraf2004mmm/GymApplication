@@ -1,5 +1,5 @@
-﻿using GymApplication.DAL.Repositories;
-using GymApplication.Models;
+﻿using GymApplication.DAL.Data.Models;
+using GymApplication.DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;

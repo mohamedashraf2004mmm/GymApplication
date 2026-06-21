@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using GymApplication.Models;
 
 using Microsoft.EntityFrameworkCore;
+using GymApplication.DAL.Data.Models;
 
 
-namespace GymApplication.Configurations
+namespace GymApplication.DAL.Data.Configurations
 {
     public class PlanConfiguration : IEntityTypeConfiguration<Plan>
     {

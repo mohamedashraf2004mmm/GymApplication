@@ -1,5 +1,4 @@
-﻿using GymApplication.DAL.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
@@ -7,8 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using GymApplication.DAL.Data.Models;
 
-namespace GymApplication.DAL.Configurations
+namespace GymApplication.DAL.Data.Configurations
 {
     public class GymUserConfiguration<T> : IEntityTypeConfiguration<T> where T : GymUser
     {

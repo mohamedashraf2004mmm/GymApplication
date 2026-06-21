@@ -1,4 +1,4 @@
-﻿using GymApplication.DAL.Models;
+﻿using GymApplication.DAL.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymApplication.DAL.Configurations
+namespace GymApplication.DAL.Data.Configurations
 {
     public class MemberConfiguration :  GymUserConfiguration<Member> , IEntityTypeConfiguration<Member>
     {

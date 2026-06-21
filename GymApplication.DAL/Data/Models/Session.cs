@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymApplication.DAL.Models
+namespace GymApplication.DAL.Data.Models
 {
     public class Session : BaseEntity
     {
@@ -12,6 +12,14 @@ namespace GymApplication.DAL.Models
         public int Capacity { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+
+        public Trainer Trainer { get; set; }
+        public int TrainerId { get; set; }
+
+        public Category Category { get; set; }
+        public int CategoryId { get; set; }
+
+        public ICollection<Booking> SessionMembers { get; set; } = default!;
 
     }
 }
