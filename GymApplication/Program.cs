@@ -1,6 +1,7 @@
 using GymApplication.DAL;
 using GymApplication.DAL.Data.DbContextss;
-using GymApplication.DAL.Repositories;
+using GymApplication.DAL.Repositories.Classes;
+using GymApplication.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymApplication

@@ -7,10 +7,11 @@ using GymApplication.DAL.Data.Models;
 
 
 
-namespace GymApplication.DAL.Repositories
+namespace GymApplication.DAL.Repositories.Interfaces
 {
     public interface IPlanRespository
     {
+        //data access
         Task<IEnumerable<Plan>> GetAllAsync();
         Task<Plan?>GetByIdAsync(int id);
 

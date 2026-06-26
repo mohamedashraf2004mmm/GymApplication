@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using GymApplication.DAL.Data.DbContextss;
 using GymApplication.DAL.Data.Models;
+using GymApplication.DAL.Repositories.Interfaces;
 
-namespace GymApplication.DAL.Repositories
+namespace GymApplication.DAL.Repositories.Classes
 {
     public class PlanRepository : IPlanRespository
     {
@@ -15,7 +16,7 @@ namespace GymApplication.DAL.Repositories
 
         public PlanRepository(GymDbContext dbcontext)
         {
-            this.dbContext = dbcontext;
+            dbContext = dbcontext;
         }
         public void Add(Plan p)
         {

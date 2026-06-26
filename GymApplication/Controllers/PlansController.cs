@@ -1,8 +1,7 @@
 ﻿using GymApplication.DAL.Data.DbContextss;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
-using GymApplication.DAL.Repositories;
+using GymApplication.DAL.Repositories.Interfaces;
 
 namespace GymApplication.BLL.Controllers;
 
