@@ -8,14 +8,24 @@ using System.Threading.Tasks;
 
 namespace GymApplication.DAL
 {
-    public class MockPlanRepository : IPlanRespository
+    public class MockPlanRepository : GenericRepository<Plan> , IPlanRespository
     {
         public void Add(Plan p)
         {
             throw new NotImplementedException();
         }
 
+        public Task<int> AddAsync(Plan entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Delete(Plan p)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> DeleteAsync(Plan entity)
         {
             throw new NotImplementedException();
         }
@@ -29,10 +39,25 @@ namespace GymApplication.DAL
             return plans;
         }
 
+        public Task<IEnumerable<Plan>> GetAllAsync(bool tracking = false, CancellationToken ct = default)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Plan?> GetByIdAsync(int id)
         {
             var mockplan = new Plan() { PlanName = "mock plan with id 3" };
             return mockplan;
+        }
+
+        public Task<Plan?> GetByIdAsync(int id, CancellationToken ct = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Plan>> GetPlanWithMembers()
+        {
+            throw new NotImplementedException();
         }
 
         public Task<int> SaveChangesAsync()
@@ -41,6 +66,11 @@ namespace GymApplication.DAL
         }
 
         public Task UpdateAsync(Plan p)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<int> GenericRepository<Plan>.UpdateAsync(Plan entity)
         {
             throw new NotImplementedException();
         }

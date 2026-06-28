@@ -9,17 +9,8 @@ using GymApplication.DAL.Data.Models;
 
 namespace GymApplication.DAL.Repositories.Interfaces
 {
-    public interface IPlanRespository
+    public interface IPlanRespository : GenericRepository<Plan> 
     {
-        //data access
-        Task<IEnumerable<Plan>> GetAllAsync();
-        Task<Plan?>GetByIdAsync(int id);
-
-        void Add(Plan p);
-        Task UpdateAsync(Plan p);
-        void Delete(Plan p);
-
-        Task<int> SaveChangesAsync() ;
-        
+        Task<IEnumerable<Plan>> GetPlanWithMembers();
     }
 }

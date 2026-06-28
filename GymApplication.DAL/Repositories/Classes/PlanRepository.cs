@@ -10,42 +10,20 @@ using GymApplication.DAL.Repositories.Interfaces;
 
 namespace GymApplication.DAL.Repositories.Classes
 {
-    public class PlanRepository : IPlanRespository
+    public class PlanRepository : GenericRepository<Plan> , IPlanRespository
     {
-        public GymDbContext dbContext;
+       
 
-        public PlanRepository(GymDbContext dbcontext)
+        public PlanRepository(GymDbContext dbcontext) : base(dbcontext)
         {
-            dbContext = dbcontext;
-        }
-        public void Add(Plan p)
-        {
-            dbContext.Plans.Add(p);
+        
         }
 
-        public void Delete(Plan p)
-        {
-            dbContext.Remove(p);
-        }
-
-        public async Task<IEnumerable<Plan>> GetAllAsync()
-        {
-            return await dbContext.Plans.ToListAsync();
-        }
-
-        public async Task<Plan?> GetByIdAsync(int id)
-        {
-            return await dbContext.Plans.FirstOrDefaultAsync(p => p.Id == id);
-        }
-
-        public async Task<int> SaveChangesAsync()
-        {
-            return await dbContext.SaveChangesAsync();
-        } 
-
-        public Task UpdateAsync(Plan p)
+        public Task<IEnumerable<Plan>> GetPlanWithMembers()
         {
             throw new NotImplementedException();
         }
+
+       
     }
 }

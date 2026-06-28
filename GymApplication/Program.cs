@@ -15,7 +15,7 @@ namespace GymApplication
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddScoped<IPlanRespository, PlanRepository>();
+            builder.Services.AddScoped(typeof(DAL.Repositories.Interfaces.GenericRepository<>) , typeof(DAL.Repositories.Classes.GenericRepository<>));
             builder.Services.AddDbContext<GymDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

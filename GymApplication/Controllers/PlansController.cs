@@ -1,17 +1,19 @@
 ﻿using GymApplication.DAL.Data.DbContextss;
+using GymApplication.DAL.Data.Models;
+using GymApplication.DAL.Repositories.Classes;
+using GymApplication.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GymApplication.DAL.Repositories.Interfaces;
 
 namespace GymApplication.BLL.Controllers;
 
 public class PlansController : Controller
 {
-    private IPlanRespository planrepo;
+    private DAL.Repositories.Interfaces.GenericRepository<Plan> _planRepo;
 
-    public PlansController(IPlanRespository repo)
+    public PlansController(DAL.Repositories.Interfaces.GenericRepository<Plan> repo)
     {
-        planrepo = repo;
+        _planRepo = repo;
     }
 
     //Now the controller does not create the object 
@@ -22,13 +24,13 @@ public class PlansController : Controller
     //GET BaseURL/Plans/Details ==> single page
     public async Task<IActionResult> Index()
     {
-        var plans = await planrepo.GetAllAsync();
+        var plans = await _planRepo.GetAllAsync();
         return View(plans);
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        var myplan = await planrepo.GetByIdAsync(id);
+        var myplan = await _planRepo.GetByIdAsync(id);
         if (myplan is null) return RedirectToAction(nameof(Index));
         else return View(myplan);
     }
