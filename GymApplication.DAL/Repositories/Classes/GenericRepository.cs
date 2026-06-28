@@ -1,5 +1,7 @@
-﻿using GymApplication.DAL.Data.Models;
+﻿using GymApplication.DAL.Data.DbContextss;
+using GymApplication.DAL.Data.Models;
 using GymApplication.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +12,48 @@ namespace GymApplication.DAL.Repositories.Classes
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity, new()
     {
-        public Task<int> AddAsync(TEntity entity)
+
+        private readonly GymDbContext _dbContext;
+
+        private readonly DbSet<TEntity> _set;
+
+        public GenericRepository(GymDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
+            _set = dbContext.Set<TEntity>();
         }
 
-        public Task<int> DeleteAsync(TEntity entity)
+        //we used here the dependency injection for the dbcontext
+
+
+        public async Task<int> AddAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+           _set.Add(entity);
+           return await _dbContext.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<TEntity>> GetAllById(bool tracking = false, CancellationToken ct = default)
+        public async Task<int> DeleteAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+           _set.Remove(entity);
+            return await _dbContext.SaveChangesAsync();
         }
 
-        public Task<TEntity?> GetByIdAsync(int id, CancellationToken ct = default)
+        public async Task<IEnumerable<TEntity>> GetAllAsync(bool tracking = false, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            IQueryable<TEntity> query = tracking ? _set : _set.AsNoTracking();
+            return await query.ToListAsync();
         }
 
-        public Task<int> UpdateAsync(TEntity entity)
+        public async Task<TEntity?> GetByIdAsync(int id, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+          return await  _set.FindAsync(id, ct);
+           
+        }
+
+        public async Task<int> UpdateAsync(TEntity entity)
+        {
+           _set.Update(entity);
+            return await _dbContext.SaveChangesAsync();
         }
     }
 }
