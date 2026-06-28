@@ -9,9 +9,9 @@ namespace GymApplication.BLL.Controllers;
 
 public class PlansController : Controller
 {
-    private DAL.Repositories.Interfaces.GenericRepository<Plan> _planRepo;
+    private GenericRepository<Plan> _planRepo;
 
-    public PlansController(DAL.Repositories.Interfaces.GenericRepository<Plan> repo)
+    public PlansController(GenericRepository<Plan> repo)
     {
         _planRepo = repo;
     }

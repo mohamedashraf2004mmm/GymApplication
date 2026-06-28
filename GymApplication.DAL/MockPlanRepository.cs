@@ -1,4 +1,5 @@
 ﻿using GymApplication.DAL.Data.Models;
+using GymApplication.DAL.Repositories.Classes;
 using GymApplication.DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GymApplication.DAL
 {
-    public class MockPlanRepository : GenericRepository<Plan> , IPlanRespository
+    public class MockPlanRepository
     {
         public void Add(Plan p)
         {
@@ -70,9 +71,6 @@ namespace GymApplication.DAL
             throw new NotImplementedException();
         }
 
-        Task<int> GenericRepository<Plan>.UpdateAsync(Plan entity)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

@@ -9,7 +9,7 @@ using GymApplication.DAL.Data.Models;
 
 namespace GymApplication.DAL.Repositories.Interfaces
 {
-    public interface IPlanRespository : GenericRepository<Plan> 
+    public interface IPlanRespository : IGenericRepository<Plan> 
     {
         Task<IEnumerable<Plan>> GetPlanWithMembers();
     }
