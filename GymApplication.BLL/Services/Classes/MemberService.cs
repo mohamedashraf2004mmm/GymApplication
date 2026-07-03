@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GymApplication.BLL.Services.Classes
 {
-    internal class MemberService : IMemberService
+    public class MemberService : IMemberService
     {
         private readonly IGenericRepository<Member> _memberrepo;
 

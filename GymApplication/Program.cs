@@ -1,3 +1,5 @@
+using GymApplication.BLL.Services.Classes;
+using GymApplication.BLL.Services.Interfaces;
 using GymApplication.DAL;
 using GymApplication.DAL.Data.DbContextss;
 using GymApplication.DAL.Repositories.Classes;
@@ -20,6 +22,10 @@ namespace GymApplication
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+           // builder.Services.AddScoped(typeof(IMemberService), typeof(MemberService));
+
+            builder.Services.AddScoped<IMemberService , MemberService>();
 
             var app = builder.Build();
 

@@ -1,4 +1,5 @@
-﻿using GymApplication.DAL.Data.Models;
+﻿using GymApplication.BLL.Services.Interfaces;
+using GymApplication.DAL.Data.Models;
 using GymApplication.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -7,20 +8,26 @@ namespace GymApplication.PL.Controllers
 {
     public class MembersController : Controller
     {
-        private readonly IGenericRepository<Member> _memberrepo;
+        //private readonly IGenericRepository<Member> _memberrepo;
+        // controller will not talk to repo anymore
+
+
+        public IMemberService _memberService { get; }
+
 
         //Index GET BaseUrl / Members / Index
         // List all members
 
-        public MembersController(IGenericRepository<Member> memberrepo)
+        public MembersController(IMemberService memberservice)
         {
-            this._memberrepo = memberrepo;
+            _memberService = memberservice;
         }
+
+        
 
         public async Task<IActionResult> Index()
         {
-            var members = await _memberrepo.GetAllAsync();
-            return View(members);
+            return View();
         }
 
         //Details GET BaseUrl / Members / Details{id}

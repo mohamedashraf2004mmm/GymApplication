@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GymApplication.BLL.Services.Interfaces
 {
-    internal interface IMemberService
+    public interface IMemberService
     {
         Task<IEnumerable<MemberViewModel>> GetAllMemberAsync(CancellationToken ct = default);
 
