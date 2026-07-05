@@ -23,11 +23,12 @@ namespace GymApplication.PL.Controllers
             _memberService = memberservice;
         }
 
-        
+        //CRUD operations here
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CancellationToken ct)
         {
-            return View();
+            var members = await _memberService.GetAllMemberAsync(ct);
+            return View(members);
         }
 
         //Details GET BaseUrl / Members / Details{id}
