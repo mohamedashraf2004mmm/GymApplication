@@ -1,4 +1,5 @@
 ﻿using GymApplication.BLL.Services.Interfaces;
+using GymApplication.BLL.ViewModels;
 using GymApplication.DAL.Data.Models;
 using GymApplication.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -43,12 +44,22 @@ namespace GymApplication.PL.Controllers
         //Get => show the form for u (empty form)
         //GET BaseUrl / Members / Create
         [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
+        public IActionResult Create() => View();
+
 
         //Post => Submit the form
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateMemberViewModel model , CancellationToken ct)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(nameof(Create) , model);
+            }
+
+           var result = await _memberService.CreateMemberAsync(model, ct);
+            return RedirectToAction(nameof(Index));
+        }
+
         //Post BaseUrl / Members / Create{member}
         #endregion
 

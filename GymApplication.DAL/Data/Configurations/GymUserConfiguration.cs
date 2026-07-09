@@ -23,8 +23,8 @@ namespace GymApplication.DAL.Data.Configurations
 
             builder.ToTable(tb =>
             {
-                tb.HasCheckConstraint("EmailCheck", "Email like '--@---'");
-                tb.HasCheckConstraint("PhoneCheck", "Phone like '010@'");
+                tb.HasCheckConstraint("EmailCheck", "Email LIKE '%@%.%'");
+                tb.HasCheckConstraint("PhoneCheck", "Phone LIKE '010________'");
             });
 
             builder.OwnsOne(x => x.Address, address =>

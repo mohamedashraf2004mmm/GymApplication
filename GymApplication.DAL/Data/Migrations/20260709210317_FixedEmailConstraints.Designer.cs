@@ -4,6 +4,7 @@ using GymApplication.DAL.Data.DbContextss;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymApplication.DAL.Data.Migrations
 {
     [DbContext(typeof(GymDbContext))]
-    partial class GymDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260709210317_FixedEmailConstraints")]
+    partial class FixedEmailConstraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,9 +198,9 @@ namespace GymApplication.DAL.Data.Migrations
 
                     b.ToTable("Members", null, t =>
                         {
-                            t.HasCheckConstraint("EmailCheck", "Email LIKE '%@%.%'");
+                            t.HasCheckConstraint("EmailCheck", "Email LIKE '__@___'");
 
-                            t.HasCheckConstraint("PhoneCheck", "Phone LIKE '010________'");
+                            t.HasCheckConstraint("PhoneCheck", "Phone like '010@'");
                         });
                 });
 
@@ -377,10 +380,10 @@ namespace GymApplication.DAL.Data.Migrations
 
                     b.ToTable("Trainers", t =>
                         {
-                            t.HasCheckConstraint("EmailCheck", "Email LIKE '%@%.%'")
+                            t.HasCheckConstraint("EmailCheck", "Email LIKE '__@___'")
                                 .HasName("EmailCheck1");
 
-                            t.HasCheckConstraint("PhoneCheck", "Phone LIKE '010________'")
+                            t.HasCheckConstraint("PhoneCheck", "Phone like '010@'")
                                 .HasName("PhoneCheck1");
                         });
                 });
