@@ -42,6 +42,11 @@ namespace GymApplication.PL.Controllers
 
         //Get => show the form for u (empty form)
         //GET BaseUrl / Members / Create
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
 
         //Post => Submit the form
         //Post BaseUrl / Members / Create{member}
