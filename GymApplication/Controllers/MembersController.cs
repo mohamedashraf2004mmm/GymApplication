@@ -34,9 +34,31 @@ namespace GymApplication.PL.Controllers
 
         //Details GET BaseUrl / Members / Details{id}
         // Show one member details
+        public async Task<IActionResult> MemberDetails(int id, CancellationToken ct)
+        {
+            //check if member is null => return index with message
+            //else => return view data
+
+            var member = await _memberService.GetMemberDetailsByIdAsync(id, ct);
+            if (member is null)
+            {
+                TempData["ErrorMessage"] = "Member not found";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(member);
+
+        }
 
         //HealthRecordDetails GET BaseUrl / Members / HealthRecordDetails{id}
+
         //show one member health details
+        //public async Task<IActionResult>HealthRecordDetails(int id , CancellationToken ct)
+        //{
+        //    //Get health record by member id
+        //    //check if member is null => return index with message
+        //    //else => return view data
+           
+        //}
 
 
         #region Create Member

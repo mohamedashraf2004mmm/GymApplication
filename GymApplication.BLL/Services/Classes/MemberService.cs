@@ -14,10 +14,15 @@ namespace GymApplication.BLL.Services.Classes
     public class MemberService : IMemberService
     {
         private readonly IGenericRepository<Member> _memberrepo;
+        private readonly IGenericRepository<MemberShip> _membershiprepo;
+        private readonly IGenericRepository<Plan> _planrepo;
 
-        public MemberService(IGenericRepository<Member> memberrepo)
+        public MemberService(IGenericRepository<Member> memberrepo , IGenericRepository<MemberShip>membershiprepo ,
+            IGenericRepository<Plan> planrepo)
         {
             this._memberrepo = memberrepo;
+            this._membershiprepo = membershiprepo;
+            this._planrepo = planrepo;
         }
 
         public async Task<bool> CreateMemberAsync(CreateMemberViewModel model, CancellationToken ct)
@@ -92,6 +97,37 @@ namespace GymApplication.BLL.Services.Classes
                 Id = m.Id,
             });
             return membersviewmodel;
+        }
+
+        public async Task<MemberViewModel?> GetMemberDetailsByIdAsync(int MemberId, CancellationToken ct = default)
+        {
+            var member = await _memberrepo.GetByIdAsync(MemberId , ct) ;
+            if (member == null) return null;
+
+            var model = new MemberViewModel()
+            {
+                Name = member.name,
+                Phone = member.Phone,
+                Email = member.email,
+                DateOfBirth = member.DateOfBirth.ToShortDateString(),
+                Gender = member.Gender.ToString(),
+                Address = $"{member.Address.BuildingNumber} - {member.Address.Street} - {member.Address?.City}"
+            };
+            //var memberships = await _membershiprepo.GetAllAsync();
+            //var aciveMembership = memberships.FirstOrDefault(x => x.MemberId == MemberId && x.EndDate > DateTime.Now);
+
+            var aciveMemberShip = await _membershiprepo.FirstOrDefaultAsync(x => x.MemberId == MemberId && x.EndDate > DateTime.Now) ;
+
+            if(aciveMemberShip is not null)
+            {
+                var activePlan = await _planrepo.GetByIdAsync(aciveMemberShip.PlanId, ct);
+
+                model.MemberShipStartDate = aciveMemberShip.CreatedAt.ToString();
+                model.MemberShipEndDate = aciveMemberShip.EndDate.ToString();
+
+                model.PlanName = activePlan?.PlanName;
+            }
+            return model;
         }
     }
 }

@@ -14,5 +14,7 @@ namespace GymApplication.BLL.Services.Interfaces
 
         Task<bool>CreateMemberAsync(CreateMemberViewModel member , CancellationToken ct);
 
+        Task<MemberViewModel?>GetMemberDetailsByIdAsync(int MemberId , CancellationToken ct = default);
+
     }
 }
