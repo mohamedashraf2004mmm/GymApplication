@@ -1,22 +1,32 @@
 ﻿
 @model IEnumerable<MemberViewModel>
 
+@{
+    ViewData["Title"] = "Member index";
+}
+
 <div class="container">
     <main role="main" class="pb-3">
 
         @* Alert Messages *@
         @* Show Success Message if Member is Created Successfully *@
-        @* <div id="Alert" class="alert alert-success alert-dismissible fade show">
+        @if(TempData["SuccessMessage"] != null)
+        {
+        <div id="Alert" class="alert alert-success alert-dismissible fade show">
             <i class="bi bi-check-circle-fill me-2"></i>
-            Member Created Successfully
+            @TempData["SuccessMessage"]
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div> *@
+            </div>
+        }
         @* Show Error Message if Member Failed To Create *@
-        @* <div id="Alert" class="alert alert-danger alert-dismissible fade show">
+        else if (TempData["ErrorMessage"] != null)
+        {
+        <div id="Alert" class="alert alert-danger alert-dismissible fade show">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
-            Member Failed To Create
+                @TempData["ErrorMessage"];
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div> *@
+        </div>
+        }
 
 
         <div class="container">

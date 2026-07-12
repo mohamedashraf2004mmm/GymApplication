@@ -57,6 +57,11 @@ namespace GymApplication.PL.Controllers
             }
 
            var result = await _memberService.CreateMemberAsync(model, ct);
+            if (result)
+                TempData["SuccessMessage"] = "Member Created Successfully";
+            else
+                TempData["ErrorMessage"] = "Failed to create Member";
+
             return RedirectToAction(nameof(Index));
         }
 
