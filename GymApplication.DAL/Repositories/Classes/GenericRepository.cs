@@ -59,7 +59,6 @@ namespace GymApplication.DAL.Repositories.Classes
         public async Task<TEntity?> GetByIdAsync(int id, CancellationToken ct = default)
         {
           return await  _set.FindAsync(id, ct);
-           
         }
 
         public async Task<int> UpdateAsync(TEntity entity)
