@@ -27,7 +27,7 @@ namespace GymApplication.DAL.Repositories.Classes
         //we used here the dependency injection for the dbcontext
 
 
-        public async Task<int> AddAsync(TEntity entity)
+        public async Task<int> AddAsync(TEntity entity, CancellationToken ct = default)
         {
            _set.Add(entity);
            return await _dbContext.SaveChangesAsync();
@@ -38,7 +38,7 @@ namespace GymApplication.DAL.Repositories.Classes
             return await _set.AsNoTracking().AnyAsync(Predicate, ct);
         }
 
-        public async Task<int> DeleteAsync(TEntity entity)
+        public async Task<int> DeleteAsync(TEntity entity, CancellationToken ct = default)
         {
            _set.Remove(entity);
             return await _dbContext.SaveChangesAsync();
@@ -61,7 +61,7 @@ namespace GymApplication.DAL.Repositories.Classes
           return await  _set.FindAsync(id, ct);
         }
 
-        public async Task<int> UpdateAsync(TEntity entity)
+        public async Task<int> UpdateAsync(TEntity entity, CancellationToken ct = default)
         {
            _set.Update(entity);
             return await _dbContext.SaveChangesAsync();

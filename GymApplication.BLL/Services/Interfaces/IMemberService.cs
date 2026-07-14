@@ -18,5 +18,9 @@ namespace GymApplication.BLL.Services.Interfaces
 
         Task<HealthRecordViewModel?>GetMemberHealthRecordAsync(int MemberId , CancellationToken ct = default);
 
+        Task<MemberToUpdateViewModel?>GetMemberToUpdateAsync(int MemberId , CancellationToken ct = default);
+
+        Task<bool>UpdateMemberDetailsAsync(int id , MemberToUpdateViewModel model ,  CancellationToken ct = default);
+
     }
 }
