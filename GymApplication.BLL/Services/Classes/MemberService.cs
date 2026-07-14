@@ -16,13 +16,15 @@ namespace GymApplication.BLL.Services.Classes
         private readonly IGenericRepository<Member> _memberrepo;
         private readonly IGenericRepository<MemberShip> _membershiprepo;
         private readonly IGenericRepository<Plan> _planrepo;
+        private readonly IGenericRepository<HealthRecord> _healthRecordRepo;
 
         public MemberService(IGenericRepository<Member> memberrepo , IGenericRepository<MemberShip>membershiprepo ,
-            IGenericRepository<Plan> planrepo)
+            IGenericRepository<Plan> planrepo , IGenericRepository<HealthRecord>HealthRecordRepo)
         {
             this._memberrepo = memberrepo;
             this._membershiprepo = membershiprepo;
             this._planrepo = planrepo;
+            _healthRecordRepo = HealthRecordRepo;
         }
 
         public async Task<bool> CreateMemberAsync(CreateMemberViewModel model, CancellationToken ct)
@@ -128,6 +130,22 @@ namespace GymApplication.BLL.Services.Classes
                 model.PlanName = activePlan?.PlanName;
             }
             return model;
+        }
+
+        public async Task<HealthRecordViewModel?> GetMemberHealthRecordAsync(int MemberId, CancellationToken ct = default)
+        {
+            var record = await _healthRecordRepo.FirstOrDefaultAsync(x => x.MemberId == MemberId, ct:ct);
+            if (record is null) return null;
+            else
+                return new HealthRecordViewModel()
+                {
+                    Weight = record.Weight,
+                    Height = record.Height,
+                    Note = record.Note,
+                    BloodType = record.BloodType,
+                };
+
+
         }
     }
 }

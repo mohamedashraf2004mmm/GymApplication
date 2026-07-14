@@ -57,7 +57,7 @@ namespace GymApplication.PL.Controllers
         //    //Get health record by member id
         //    //check if member is null => return index with message
         //    //else => return view data
-           
+
         //}
 
 
@@ -71,20 +71,31 @@ namespace GymApplication.PL.Controllers
 
         //Post => Submit the form
         [HttpPost]
-        public async Task<IActionResult> Create(CreateMemberViewModel model , CancellationToken ct)
+        public async Task<IActionResult> Create(CreateMemberViewModel model, CancellationToken ct)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return View(nameof(Create) , model);
+                return View(nameof(Create), model);
             }
 
-           var result = await _memberService.CreateMemberAsync(model, ct);
+            var result = await _memberService.CreateMemberAsync(model, ct);
             if (result)
                 TempData["SuccessMessage"] = "Member Created Successfully";
             else
                 TempData["ErrorMessage"] = "Failed to create Member";
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> HealthRecordDetails(int id , CancellationToken ct)
+        {
+            var result = await _memberService.GetMemberHealthRecordAsync(id, ct);
+            if(result is null)
+            {
+                TempData["ErrorMessage"] = $"Health Record of member with id {id} is not found";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(result);
         }
 
         //Post BaseUrl / Members / Create{member}
