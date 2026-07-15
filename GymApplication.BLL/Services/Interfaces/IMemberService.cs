@@ -22,5 +22,7 @@ namespace GymApplication.BLL.Services.Interfaces
 
         Task<bool>UpdateMemberDetailsAsync(int id , MemberToUpdateViewModel model ,  CancellationToken ct = default);
 
+        Task<bool>RemoveMember(int memberId , CancellationToken ct = default);
+
     }
 }
