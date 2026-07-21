@@ -89,7 +89,7 @@ namespace GymApplication.BLL.Services.Classes
 
         private async Task<bool>HasActiveMemberShips(int planId,CancellationToken ct = default)
         {
-            return await _memberShipsRepo.AnyAsync(m => m.PlanId == planId && m.IsActive, ct); 
+            return await _memberShipsRepo.AnyAsync(m => m.PlanId == planId && m.EndDate > DateTime.Now, ct); 
         }
     }
 }
