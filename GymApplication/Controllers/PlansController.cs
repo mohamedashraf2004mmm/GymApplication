@@ -44,9 +44,9 @@ public class PlansController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult>Edit(int planId , CancellationToken ct)
+    public async Task<IActionResult>Edit(int id , CancellationToken ct)
     {
-        var plan = await _planService.GetPlanToUpdateAsync(planId , ct);
+        var plan = await _planService.GetPlanToUpdateAsync(id , ct);
         if(plan is null)
         {
             TempData["ErrorMessage"] = "Plan can not be edited";
