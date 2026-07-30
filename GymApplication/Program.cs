@@ -27,6 +27,7 @@ namespace GymApplication
 
             builder.Services.AddScoped<IMemberService , MemberService>();
             builder.Services.AddScoped<IPlanService, PlanService>();
+            builder.Services.AddScoped<ITrainerService , TrainerService>();
 
             var app = builder.Build();
 
