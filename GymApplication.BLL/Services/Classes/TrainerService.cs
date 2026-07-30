@@ -51,7 +51,7 @@ namespace GymApplication.BLL.Services.Classes
         public async Task<bool> CreateTrainerAsync(CreateTrainerViewModel model, CancellationToken ct = default)
         {
             var phoneCheck = await _trainerRepo.AnyAsync(t => t.Phone == model.Phone, ct);
-            var emailCheck = await _trainerRepo.AnyAsync(t => t.Phone == model.Phone, ct);
+            var emailCheck = await _trainerRepo.AnyAsync(t => t.email == model.Email, ct);
 
             if (phoneCheck || emailCheck) return false;
 
