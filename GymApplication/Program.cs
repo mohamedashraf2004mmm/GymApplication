@@ -1,3 +1,4 @@
+using GymApplication.BLL;
 using GymApplication.BLL.Services.Classes;
 using GymApplication.BLL.Services.Interfaces;
 using GymApplication.DAL;
@@ -29,6 +30,8 @@ namespace GymApplication
             builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddScoped<ITrainerService , TrainerService>();
             builder.Services.AddScoped<ISessionService , SessionService>();
+
+            builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfile()));
 
             builder.Services.AddScoped<IUnitOfWork , UnitOfWork>();
             builder.Services.AddScoped<ISessionRepository , SessionRepository>();

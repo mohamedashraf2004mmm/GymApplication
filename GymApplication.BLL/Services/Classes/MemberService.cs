@@ -1,4 +1,5 @@
-﻿using GymApplication.BLL.Services.Interfaces;
+﻿using AutoMapper;
+using GymApplication.BLL.Services.Interfaces;
 using GymApplication.BLL.ViewModels;
 using GymApplication.DAL.Data.Models;
 using GymApplication.DAL.Repositories.Interfaces;
@@ -14,6 +15,7 @@ namespace GymApplication.BLL.Services.Classes
     public class MemberService : IMemberService
     {
         private readonly IUnitOfWork _unitOfWork;
+       private readonly IMapper _mapper;
 
         //private readonly IGenericRepository<Member> _memberrepo;
         //private readonly IGenericRepository<MemberShip> _membershiprepo;
@@ -23,9 +25,10 @@ namespace GymApplication.BLL.Services.Classes
 
 
 
-        public MemberService(IUnitOfWork unitofwork)
+        public MemberService(IUnitOfWork unitofwork, IMapper mapper)
         {
             _unitOfWork = unitofwork;
+            _mapper = mapper; 
         }
 
         public async Task<bool> CreateMemberAsync(CreateMemberViewModel model, CancellationToken ct)
@@ -75,32 +78,8 @@ namespace GymApplication.BLL.Services.Classes
 
             if (!members.Any()) return [];
 
-            //List<MemberViewModel> membersViewModel = new List<MemberViewModel>();
+            var membersviewmodel = _mapper.Map<IEnumerable<Member> , IEnumerable<MemberViewModel>>(members);
 
-            //foreach (var member in members)
-            //{
-            //    var MemberViewModel = new MemberViewModel()
-            //    {
-            //        Name = member.name,
-            //        Email = member.email,
-            //        Gender = member.Gender.ToString(),
-            //        Phone = member.Phone,
-            //        Photo = member.Photo,
-            //        Id = member.Id,
-            //    };
-            //    membersViewModel.Add(MemberViewModel);
-            //}
-            //return membersViewModel;
-
-            var membersviewmodel = members.Select(m => new MemberViewModel()
-            {
-                Name = m.name,
-                Email = m.email,
-                Gender = m.Gender.ToString(),
-                Phone = m.Phone,
-                Photo = m.Photo,
-                Id = m.Id,
-            });
             return membersviewmodel;
         }
 
@@ -109,15 +88,7 @@ namespace GymApplication.BLL.Services.Classes
             var member = await _unitOfWork.GetRepository<Member>().GetByIdAsync(MemberId , ct) ;
             if (member == null) return null;
 
-            var model = new MemberViewModel()
-            {
-                Name = member.name,
-                Phone = member.Phone,
-                Email = member.email,
-                DateOfBirth = member.DateOfBirth.ToShortDateString(),
-                Gender = member.Gender.ToString(),
-                Address = $"{member.Address.BuildingNumber} - {member.Address.Street} - {member.Address?.City}"
-            };
+            var model = _mapper.Map<Member , MemberViewModel>(member);
             //var memberships = await _membershiprepo.GetAllAsync();
             //var aciveMembership = memberships.FirstOrDefault(x => x.MemberId == MemberId && x.EndDate > DateTime.Now);
 
