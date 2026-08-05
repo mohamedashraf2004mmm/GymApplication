@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using GymApplication.BLL.ViewModels;
+using GymApplication.BLL.ViewModels.SessionViewModels;
 using GymApplication.DAL.Data.Models;
+using GymManagementBLL.ViewModels.SessionViewModels;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +16,15 @@ namespace GymApplication.BLL
     {
         public MappingProfile()
         {
+            MapMember();
+            MapSession();
+        }
+
+        public void MapMember()
+        {
             CreateMap<Member, MemberViewModel>()
-                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => $"{src.Address.BuildingNumber} - {src.Address.Street} - {src.Address.City}"))
-                .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => src.DateOfBirth.ToShortDateString()));
+               .ForMember(dest => dest.Address, opt => opt.MapFrom(src => $"{src.Address.BuildingNumber} - {src.Address.Street} - {src.Address.City}"))
+               .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => src.DateOfBirth.ToShortDateString()));
 
             CreateMap<HealthRecord, HealthRecordViewModel>().ReverseMap();
 
@@ -36,16 +45,19 @@ namespace GymApplication.BLL
 
 
             CreateMap<CreateMemberViewModel, Member>()
-                .ForMember(dest => dest.Address , opt => opt.MapFrom(src => new Address()
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => new Address()
                 {
                     Street = src.Street,
                     City = src.City,
                     BuildingNumber = src.BuildingNumber
                 }))
-                .ForMember(dest => dest.HealthRecord , opt => opt.MapFrom(src => src.HealthRecordViewModel));
-               
-
-
+                .ForMember(dest => dest.HealthRecord, opt => opt.MapFrom(src => src.HealthRecordViewModel));
+        }
+        public void MapSession()
+        {
+            CreateMap<CreateSessionViewModel, Session>();
+            CreateMap<Trainer, TrainerSelectViewModel>();
+            CreateMap<Category, CategorySelectViewModel>();
         }
     }
 }
