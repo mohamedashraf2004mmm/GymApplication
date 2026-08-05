@@ -1,4 +1,5 @@
-﻿using GymApplication.BLL.ViewModels.SessionViewModels;
+﻿using GymApplication.BLL.Common;
+using GymApplication.BLL.ViewModels.SessionViewModels;
 using GymApplication.DAL.Data.Models;
 using GymManagementBLL.ViewModels.SessionViewModels;
 using System;
@@ -12,7 +13,7 @@ namespace GymApplication.BLL.Services.Interfaces
     public interface ISessionService
     {
         Task<IEnumerable<SessionViewModel>?> GetAllSessionAsync(CancellationToken ct = default);
-       Task<bool> CreateSessionAsync(CreateSessionViewModel model, CancellationToken ct = default);
+       Task<Result> CreateSessionAsync(CreateSessionViewModel model, CancellationToken ct = default);
 
         Task<IEnumerable<TrainerSelectViewModel>> GetTrainersForDropDownAsync(CancellationToken ct = default);
         Task<IEnumerable<CategorySelectViewModel>> GetCategoriesForDropDownAsync(CancellationToken ct = default);
