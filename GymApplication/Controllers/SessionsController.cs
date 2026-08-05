@@ -24,8 +24,7 @@ namespace GymApplication.PL.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            ViewBag.Trainers = new SelectList(await _sessionService.GetTrainersForDropDownAsync(),"Id","Name");
-            ViewBag.Categories = new SelectList(await _sessionService.GetCategoriesForDropDownAsync(), "Id", "CategoryName");
+            await PopulateDropdownsAsync();
             return View();
         }
         [HttpPost]
@@ -33,7 +32,7 @@ namespace GymApplication.PL.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //PopulateDropdownsAsync();
+                await PopulateDropdownsAsync();
                 return View(model);
             }
 
@@ -45,16 +44,18 @@ namespace GymApplication.PL.Controllers
                 return RedirectToAction(nameof(Index));
             }
             TempData["ErrorMessage"] = "Failed to Create Session";
+            await PopulateDropdownsAsync();
+            return View(model);
 
             //PopulateDropdownsAsync();
-            return View(model);
+          
         }
 
-        //private async Task PopulateDropdownsAsync()
-        //{
-        //    ViewBag.Trainers = new SelectList(await _sessionService.GetTrainersForDropDownAsync(), "id", "Name");
-        //    ViewBag.Categories = new SelectList(await _sessionService.GetCategoriesForDropDownAsync(), "id", "CategoryName");
-        //}
+        private async Task PopulateDropdownsAsync()
+        {
+            ViewBag.Trainers = new SelectList(await _sessionService.GetTrainersForDropDownAsync(), "Id", "Name");
+            ViewBag.Categories = new SelectList(await _sessionService.GetCategoriesForDropDownAsync(), "Id", "CategoryName");
+        }
         #endregion
     }
 }
