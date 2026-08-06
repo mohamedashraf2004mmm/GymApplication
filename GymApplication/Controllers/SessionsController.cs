@@ -51,11 +51,28 @@ namespace GymApplication.PL.Controllers
           
         }
 
+        #endregion
+
+        [HttpGet]
+        public async Task<IActionResult>Details(int id , CancellationToken ct)
+        {
+            var result = await _sessionService.GetSessionDetailsByIdAsync(id, ct);
+            if (result.success)
+            {
+                return View(result.value);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.error;
+                return RedirectToAction(nameof(Index));
+            }
+        }
         private async Task PopulateDropdownsAsync()
         {
             ViewBag.Trainers = new SelectList(await _sessionService.GetTrainersForDropDownAsync(), "Id", "Name");
             ViewBag.Categories = new SelectList(await _sessionService.GetCategoriesForDropDownAsync(), "Id", "CategoryName");
         }
-        #endregion
+
+
     }
 }
