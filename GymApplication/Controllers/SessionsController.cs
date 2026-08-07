@@ -108,6 +108,33 @@ namespace GymApplication.PL.Controllers
             }
         }
         #endregion
+
+        #region Delete
+        [HttpGet]
+        public async Task<IActionResult>Delete(int id , CancellationToken ct)
+        {
+            var result = await _sessionService.GetSessionDetailsByIdAsync(id);
+            if(result.success)
+            {
+                return View(result.value);
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.error;
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(int id, CancellationToken ct)
+        {
+            var result = await _sessionService.DeleteSessionAsync(id);
+
+            TempData[result.success ? "SuccessMessage" : "ErrorMessage"] = result.success ? "Session deleted successfully" : result.error;
+            return RedirectToAction(nameof(Index));
+
+        }
+        #endregion
         private async Task PopulateDropdownsAsync()
         {
             ViewBag.Trainers = new SelectList(await _sessionService.GetTrainersForDropDownAsync(), "Id", "Name");

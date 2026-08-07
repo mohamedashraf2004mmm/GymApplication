@@ -46,6 +46,7 @@ namespace GymApplication.BLL.Services.Classes
             return (await _unitOfWork.SaveChangesAsync() > 0) ? Result.OK() : Result.Fail("Failed to create session");
         }
 
+
         public async Task<IEnumerable<SessionViewModel>?> GetAllSessionAsync(CancellationToken ct = default)
         {
             var sessions = await _unitOfWork.SessionRepository.GetAllSessionsWithTrainersAndCategoryAsync(ct: ct);
@@ -149,6 +150,21 @@ namespace GymApplication.BLL.Services.Classes
             var result = await _unitOfWork.SaveChangesAsync();
 
             return (result > 0) ? Result.OK() : Result.Fail("Failed to updated session");
+        }
+        public async Task<Result> DeleteSessionAsync(int id, CancellationToken ct = default)
+        {
+            var session = await _unitOfWork.SessionRepository.GetByIdAsync(id, ct);
+            if (session is null) return Result.NotFound("Can not find session");
+
+            if (session.EndDate >= DateTime.Now) return Result.Fail("Can not delete ongoing session");
+
+            var bookingCount = await _unitOfWork.SessionRepository.GetCountOfBookedSlotsAsync(id);
+            if (bookingCount > 0) return Result.Fail("Can not delete session has bookings");
+
+            _unitOfWork.SessionRepository.Delete(session);
+           var result = await _unitOfWork.SaveChangesAsync();
+
+            return (result > 0) ? Result.OK() : Result.Fail("Failed to delete session");
         }
     }
 }
