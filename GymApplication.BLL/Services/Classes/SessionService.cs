@@ -91,10 +91,64 @@ namespace GymApplication.BLL.Services.Classes
 
         }
 
+        public async Task<Result<UpdateSessionViewModel>> GetSessionToUpdate(int sessionId, CancellationToken ct = default)
+        {
+            // can not update completed or ongoing sessions
+            var session = await _unitOfWork.SessionRepository.GetByIdAsync(sessionId, ct);
+            if(session is null)
+            {
+                return Result<UpdateSessionViewModel>.NotFound("Session was not found");
+            }
+
+            if (session.StartDate <= DateTime.Now)
+                return Result<UpdateSessionViewModel>.Fail("Can not update an ongoing or completed session");
+
+            var bookingCount = await _unitOfWork.SessionRepository.GetCountOfBookedSlotsAsync(sessionId,ct);
+            if(bookingCount > 0) return Result<UpdateSessionViewModel>.Fail("Can not update booked session");
+
+            var mappedSession = _mapper.Map<Session, UpdateSessionViewModel>(session);
+            return Result<UpdateSessionViewModel>.OK(mappedSession);
+
+        }
+
         public async Task<IEnumerable<TrainerSelectViewModel>> GetTrainersForDropDownAsync(CancellationToken ct = default)
         {
             var result = await _unitOfWork.GetRepository<Trainer>().GetAllAsync(ct: ct);
             return _mapper.Map<IEnumerable<Trainer>, IEnumerable<TrainerSelectViewModel>>(result);
+        }
+
+        public async Task<Result> UpdateSessionAsync(int id, UpdateSessionViewModel model, CancellationToken ct = default)
+        {
+            // can not update completed or ongoing sessions
+            var session = await _unitOfWork.SessionRepository.GetByIdAsync(id, ct);
+            if (session == null)
+            {
+                return Result.NotFound("Session was not found");
+            }
+
+            if (model.EndDate <= model.StartDate) return Result.Validation("End date must be after start date");
+            if (session.StartDate <= DateTime.Now) return Result.Fail("Can not edit a session that already started");
+
+            var bookingCount = await _unitOfWork.SessionRepository.GetCountOfBookedSlotsAsync(id, ct);
+            if (bookingCount > 0) return Result.Fail("Can not update booked session");
+
+            if (model.StartDate < DateTime.Now) return Result.Validation("Start date must be in future");
+
+            var trainer = await _unitOfWork.GetRepository<Trainer>().GetByIdAsync(model.TrainerId, ct);
+            if (trainer is null) return Result.NotFound("Trainer not found");
+
+            var category = await _unitOfWork.GetRepository<Category>().GetByIdAsync(session.CategoryId);
+
+            var isValid = Enum.TryParse<Speciality>(category?.CategoryName, out var trainerSpec);
+            if (!isValid || trainer.Speciality != trainerSpec) return Result.Validation("Can not assign the session to this trainer");
+
+            _mapper.Map(model,session);
+            session.UpdatedAt = DateTime.Now;
+
+            _unitOfWork.SessionRepository.Update(session);
+            var result = await _unitOfWork.SaveChangesAsync();
+
+            return (result > 0) ? Result.OK() : Result.Fail("Failed to updated session");
         }
     }
 }
