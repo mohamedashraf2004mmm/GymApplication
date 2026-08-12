@@ -2,16 +2,19 @@ using GymApplication.BLL;
 using GymApplication.BLL.Services.Classes;
 using GymApplication.BLL.Services.Interfaces;
 using GymApplication.DAL;
+using GymApplication.DAL.Data.DataSeeding;
 using GymApplication.DAL.Data.DbContextss;
 using GymApplication.DAL.Repositories.Classes;
 using GymApplication.DAL.Repositories.Interfaces;
+using GymApplication.PL;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace GymApplication
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +41,9 @@ namespace GymApplication
             
 
             var app = builder.Build();
+
+            await app.MigrateAndSeedDatabaseAsync();
+
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
