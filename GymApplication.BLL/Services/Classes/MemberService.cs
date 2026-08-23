@@ -40,6 +40,9 @@ namespace GymApplication.BLL.Services.Classes
 
             if (emailexist || phoneexist) return false;
 
+            //upload photo
+
+
             var member = _mapper.Map<CreateMemberViewModel , Member>(model);
           
             //var result = await _unitOfWork.GetRepository<Member>().AddAsync(member); //returns no of affected rows
