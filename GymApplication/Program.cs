@@ -1,4 +1,5 @@
 using GymApplication.BLL;
+using GymApplication.BLL.Services.Attachments;
 using GymApplication.BLL.Services.Classes;
 using GymApplication.BLL.Services.Interfaces;
 using GymApplication.DAL;
@@ -40,6 +41,8 @@ namespace GymApplication
 
             builder.Services.AddScoped<IUnitOfWork , UnitOfWork>();
             builder.Services.AddScoped<ISessionRepository , SessionRepository>();
+
+            builder.Services.AddScoped<IAttachmentService, AttachmentService>();
             
 
             var app = builder.Build();

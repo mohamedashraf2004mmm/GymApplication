@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GymApplication.BLL.Services.Attachments;
 using GymApplication.BLL.Services.Interfaces;
 using GymApplication.BLL.ViewModels;
 using GymApplication.DAL.Data.Models;
@@ -16,6 +17,7 @@ namespace GymApplication.BLL.Services.Classes
     {
         private readonly IUnitOfWork _unitOfWork;
        private readonly IMapper _mapper;
+        private readonly IAttachmentService _attachmentService;
 
         //private readonly IGenericRepository<Member> _memberrepo;
         //private readonly IGenericRepository<MemberShip> _membershiprepo;
@@ -25,10 +27,11 @@ namespace GymApplication.BLL.Services.Classes
 
 
 
-        public MemberService(IUnitOfWork unitofwork, IMapper mapper)
+        public MemberService(IUnitOfWork unitofwork, IMapper mapper , IAttachmentService attachmentService)
         {
             _unitOfWork = unitofwork;
-            _mapper = mapper; 
+            _mapper = mapper;
+            this._attachmentService = attachmentService;
         }
 
         public async Task<bool> CreateMemberAsync(CreateMemberViewModel model, CancellationToken ct)
@@ -41,16 +44,26 @@ namespace GymApplication.BLL.Services.Classes
             if (emailexist || phoneexist) return false;
 
             //upload photo
+         var storedPhotoName =   await _attachmentService.UploadAsync(model.PhotoFile.OpenReadStream(), model.PhotoFile.FileName, "MembersPhotos");
+            if (string.IsNullOrWhiteSpace(storedPhotoName)) return false;
 
 
             var member = _mapper.Map<CreateMemberViewModel , Member>(model);
+            member.Photo = storedPhotoName;
           
             //var result = await _unitOfWork.GetRepository<Member>().AddAsync(member); //returns no of affected rows
             //return result > 0;
             //email or phone exist return false
 
             _unitOfWork.GetRepository<Member>().Add(member);
-            return await _unitOfWork.SaveChangesAsync(ct) > 0;
+            var result = await _unitOfWork.SaveChangesAsync(ct);
+
+            if (result > 0) return true;
+            else
+            {
+                //delete uploaded photo
+                return false;
+            }
 
         }
 
