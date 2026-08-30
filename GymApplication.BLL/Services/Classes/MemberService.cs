@@ -62,6 +62,7 @@ namespace GymApplication.BLL.Services.Classes
             else
             {
                 //delete uploaded photo
+                _attachmentService.Delete(storedPhotoName, "MembersPhotos");
                 return false;
             }
 
@@ -102,7 +103,7 @@ namespace GymApplication.BLL.Services.Classes
             return model;
         }
 
-        public async Task<HealthRecordViewModel?> GetMemberHealthRecordAsync(int MemberId, CancellationToken ct = default)
+        public async Task<HealthRecordViewModel?>  GetMemberHealthRecordAsync(int MemberId, CancellationToken ct = default)
         {
             var record = await _unitOfWork.GetRepository<HealthRecord>().FirstOrDefaultAsync(x => x.MemberId == MemberId, ct:ct);
             if (record is null) return null;

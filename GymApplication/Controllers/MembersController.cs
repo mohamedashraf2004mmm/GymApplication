@@ -1,4 +1,5 @@
-﻿using GymApplication.BLL.Services.Interfaces;
+﻿using GymApplication.BLL.Services.Attachments;
+using GymApplication.BLL.Services.Interfaces;
 using GymApplication.BLL.ViewModels;
 using GymApplication.DAL.Data.Models;
 using GymApplication.DAL.Repositories.Interfaces;
@@ -9,6 +10,8 @@ namespace GymApplication.PL.Controllers
 {
     public class MembersController : Controller
     {
+        private readonly IAttachmentService _attachmentService;
+
         //private readonly IGenericRepository<Member> _memberrepo;
         // controller will not talk to repo anymore
 
@@ -19,12 +22,30 @@ namespace GymApplication.PL.Controllers
         //Index GET BaseUrl / Members / Index
         // List all members
 
-        public MembersController(IMemberService memberservice)
+        public MembersController(IMemberService memberservice , IAttachmentService attachmentService)
         {
             _memberService = memberservice;
+            this._attachmentService = attachmentService;
         }
 
         //CRUD operations here
+
+        #region Get Member photo
+        [HttpGet]
+        public async Task<IActionResult> Picture(int id)
+        {
+            var member = await _memberService.GetMemberDetailsByIdAsync(id);
+            if(member == null || string.IsNullOrEmpty(member.Photo))
+                return NotFound();
+
+          var result =  _attachmentService.GetFile(member.Photo, "MembersPhotos");
+          if(result == null)return NotFound();
+
+            return File(result.Value.stream, result.Value.contentType);
+
+
+        }
+        #endregion
 
         public async Task<IActionResult> Index(CancellationToken ct)
         {
@@ -79,7 +100,7 @@ namespace GymApplication.PL.Controllers
             }
 
             var result = await _memberService.CreateMemberAsync(model, ct);
-            if (result)
+            if (result) 
                 TempData["SuccessMessage"] = "Member Created Successfully";
             else
                 TempData["ErrorMessage"] = "Failed to create Member";
