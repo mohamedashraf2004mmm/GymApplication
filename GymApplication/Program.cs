@@ -5,9 +5,11 @@ using GymApplication.BLL.Services.Interfaces;
 using GymApplication.DAL;
 using GymApplication.DAL.Data.DataSeeding;
 using GymApplication.DAL.Data.DbContextss;
+using GymApplication.DAL.Data.Models;
 using GymApplication.DAL.Repositories.Classes;
 using GymApplication.DAL.Repositories.Interfaces;
 using GymApplication.PL;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -43,7 +45,20 @@ namespace GymApplication
             builder.Services.AddScoped<ISessionRepository , SessionRepository>();
 
             builder.Services.AddScoped<IAttachmentService, AttachmentService>();
-            
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                //config.Password.RequireLowercase = true;
+                //config.Password.RequireUppercase = true;
+                //config.Password.RequiredLength = 6;
+
+                config.User.RequireUniqueEmail = true;
+                config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2);
+                config.Lockout.MaxFailedAccessAttempts = 5;
+
+            }).AddEntityFrameworkStores<GymDbContext>();
+
+           
 
             var app = builder.Build();
 
