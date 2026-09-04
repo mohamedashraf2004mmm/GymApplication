@@ -2,10 +2,12 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using GymApplication.BLL.Services.Interfaces;
 using GymApplication.DAL.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymApplication.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

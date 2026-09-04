@@ -1,0 +1,66 @@
+﻿using GymApplication.BLL.ViewModels;
+using GymApplication.Controllers;
+using GymApplication.DAL.Data.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+namespace GymApplication.PL.Controllers
+{
+    public class AccountController : Controller
+    {
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly ILogger<AccountController> logger;
+
+        public AccountController(UserManager<ApplicationUser>userManager , 
+            SignInManager<ApplicationUser>signInManager , 
+            ILogger<AccountController> logger)
+        {
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.logger = logger;
+        }
+        //Get Login => show form
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        //post login => submit form
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model , CancellationToken ct)
+        {
+            if(!ModelState.IsValid) return View(model);
+
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if(user == null)
+            {
+                ModelState.AddModelError("InvalidLogin", "Invalid email or password");
+                return View(model);
+            }
+
+          var signInResult =  await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+          if (signInResult.Succeeded)
+            {
+                logger.LogInformation($"User {user.UserName} is Signed in");
+                return RedirectToAction(nameof(HomeController.Index) , "Home" );
+            }
+          else if (signInResult.IsLockedOut)
+            {
+                logger.LogWarning($"User {user.UserName} is locked out");
+                ModelState.AddModelError("InvalidLogin", "Account is locked , Try again later");
+                return View(model);
+            }
+            else
+            {
+                ModelState.AddModelError("InvalidLogin", "Invalid email or password");
+                return View(model);
+            }
+        }
+
+        //post logout
+
+        //Get Access Denied
+    }
+}

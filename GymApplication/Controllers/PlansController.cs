@@ -4,11 +4,13 @@ using GymApplication.DAL.Data.DbContextss;
 using GymApplication.DAL.Data.Models;
 using GymApplication.DAL.Repositories.Classes;
 using GymApplication.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymApplication.BLL.Controllers;
 
+[Authorize]
 public class PlansController : Controller
 {
     //private IGenericRepository<Plan> _planRepo;

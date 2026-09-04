@@ -1,9 +1,11 @@
 ﻿using GymApplication.BLL.Services.Interfaces;
 using GymApplication.BLL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymApplication.PL.Controllers
 {
+    [Authorize]
     public class TrainersController : Controller
     {
         private readonly ITrainerService _trainerService;

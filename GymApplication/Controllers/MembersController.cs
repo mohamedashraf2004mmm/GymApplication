@@ -3,11 +3,13 @@ using GymApplication.BLL.Services.Interfaces;
 using GymApplication.BLL.ViewModels;
 using GymApplication.DAL.Data.Models;
 using GymApplication.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace GymApplication.PL.Controllers
 {
+    [Authorize(Roles = "SuperAdmin")]
     public class MembersController : Controller
     {
         private readonly IAttachmentService _attachmentService;
