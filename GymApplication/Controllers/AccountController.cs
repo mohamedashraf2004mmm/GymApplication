@@ -1,8 +1,10 @@
 ﻿using GymApplication.BLL.ViewModels;
 using GymApplication.Controllers;
 using GymApplication.DAL.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace GymApplication.PL.Controllers
 {
@@ -60,7 +62,21 @@ namespace GymApplication.PL.Controllers
         }
 
         //post logout
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+           await signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Login));
+        }
+
+
 
         //Get Access Denied
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }
